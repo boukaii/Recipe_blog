@@ -1,0 +1,21 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Liste des Recettes{% endblock %}
+
+{% block body %}
+    <h1>Liste des Recettes</h1>
+
+    {% if recipes is empty %}
+        <p>Aucune recette n'est disponible pour le moment.</p>
+    {% else %}
+        <ul>
+            {% for recipe in recipes %}
+                <li>{{ recipe.title }}</li>
+                <li>{{ recipe.picture }}</li>
+                <a href="{{ path('app_recipe_details') }}">
+                    <button>Voir les recettes</button>
+                </a>
+            {% endfor %}
+        </ul>
+    {% endif %}
+{% endblock %}

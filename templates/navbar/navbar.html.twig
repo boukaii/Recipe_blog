@@ -1,0 +1,20 @@
+<nav class="navbar">
+    <a href="{{ path('app_home') }}" class="logo">FOOD.Travel</a>
+    <div class="nav-links">
+        <ul>
+            <li><a href="{{ path('app_home') }}">Recettes du monde</a></li>
+            <li><a href="{{ path('new_recette') }}">Créer vos recettes</a></li>
+            <li><a href="{{ path('recette') }}">Vos recettes</a></li>
+            <li><a href="">flux</a></li>
+            <li><a href="{{ path('quizz') }}">Quizz</a></li>
+
+            {% if app.user %}
+                <div class="mb-3">
+                     {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Logout</a>
+                </div>
+            {% endif %}
+            <li><a href="{{ path('app_login') }}">Connexion / Inscription</a></li>
+ 
+        </ul>
+    </div>
+</nav>

@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div class="form_recette">
+        <h1 class="title_recettes">Partager vos Recettes</h1>
+        {{ form_errors(recetteForm) }}
+        {{ form_start(recetteForm, {'attr': {'method': 'POST'}}) }}
+        <div class="title_form">{{ form_row(recetteForm.title) }}</div>
+        <div class="description_form">{{ form_row(recetteForm.description) }}</div>
+        <div class="image_form">{{ form_row(recetteForm.image) }}</div>
+        <button class="button_form" type="submit">Créer le Post</button>
+    </div>
+    {{ form_end(recetteForm) }}
+
+    {# Insérez ici le code pour afficher les recettes existantes et les formulaires de commentaire #}
+{% endblock %}

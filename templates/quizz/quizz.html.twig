@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+{% for quizz in quizzList %}
+    <h1>{{ quizz.question }}</h1>
+
+    {% if quizz.image %}
+        <img src="{{ asset(quizz.image) }}" alt="{{ quizz.question }}">
+    {% endif %}
+
+    <h2>Options de Réponse :</h2>
+    <form method="post" action="{{ path('quizz') }}">
+        <ul>
+            <li>
+                <input type="checkbox" id="choix1" name="choix1" value="{{ quizz.choix1 }}">
+                <label for="choix1">{{ quizz.choix1 }}</label>
+                {% if quizz.reponse_correct == quizz.choix1 and choix1 == quizz.choix1 %}
+                    <span class="correct-answer">(Réponse Correcte)</span>
+                {% endif %}
+            </li>
+            <li>
+                <input type="checkbox" id="choix2" name="choix2" value="{{ quizz.choix2 }}">
+                <label for="choix2">{{ quizz.choix2 }}</label>
+                {% if quizz.reponse_correct == quizz.choix2 and choix2 == quizz.choix2 %}
+                    <span class="correct-answer">(Réponse Correcte)</span>
+                {% endif %}
+            </li>
+            <li>
+                <input type="checkbox" id="choix3" name="choix3" value="{{ quizz.choix3 }}">
+                <label for="choix3">{{ quizz.choix3 }}</label>
+                {% if quizz.reponse_correct == quizz.choix3 and choix3 == quizz.choix3 %}
+                    <span class="correct-answer">(Réponse Correcte)</span>
+                {% endif %}
+            </li>
+        </ul>
+        <button type="submit">Soumettre</button>
+    </form>
+{% endfor %}
+{% endblock %}

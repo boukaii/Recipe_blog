@@ -1,0 +1,138 @@
+body {
+    /* background-image: url('../images/food.jpg'); */
+    height: 100vh;
+    width: 100%;
+    background-size: cover;
+    background-position: center;
+}
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    text-decoration: none;
+    list-style: none;
+    font-family: "Poppins", sans-serif;
+}
+
+  /* NAVBAR */
+.navbar {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-top: 3%;
+  }
+  .navbar a {
+    /* color: rgb(235, 14, 14); */
+    float: left;
+    display: block;
+    text-align: center;
+    padding: 14px 16px;
+    text-decoration: none;
+    font-weight: bold;
+  }
+  .navbar .logo {
+    font-size: 2em;
+    font-weight: bold;
+    /* color: rgb(245, 37, 37); */
+  }
+  .nav-links{
+    margin-left: 30%;
+  }
+  .navbar .nav-links ul {
+    display: flex;
+    scroll-behavior: smooth;
+  }
+  .navbar .nav-links ul li.active a {
+    font-weight: 600;
+    scroll-behavior: smooth;
+  }
+  nav ul li a:hover{
+    /* color: rgb(255, 255, 255);
+    background: rgb(245, 37, 37); */
+    border-radius: 3px;
+    transition: .3s;
+    scroll-behavior: smooth;
+  }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  /* Categorie ET ARTICLE HOME */
+.categorie_h1{
+  text-align: center;
+  margin-top: 15%;
+  margin-bottom: 5%;
+}
+.categorie_h2{
+  text-align: center;
+  margin-bottom: 5%;
+}
+.articles{
+  display: flex;
+  justify-content: space-around;
+}
+.article{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.article_image{
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+/* CREATIONS DE RECETTES */
+.form_recette{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.title_recettes{
+  margin-top: 10%;
+}
+.description_form{
+  margin-top: 5%;
+}
+.title_form{
+  margin-top: 5%;
+}
+.image_form{
+  margin-top: 5%;
+}
+.button_form{
+  margin-top: 5%;
+}
+/* VOS RECETTES */
+.recettes{
+  display: flex;
+  justify-content: space-around;
+}
+.recette{
+  border-style: none;
+  background-color: bisque;
+  font-size: 25px;
+  border-radius: 10px;
+}
+.h1_recette{
+  text-align: center;
+  margin-top: 5%;
+  margin-bottom: 5%;
+  background-color: aquamarine;
+}

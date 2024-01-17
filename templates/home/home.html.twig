@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+{% block body %}
+    <h1>FoodTravel</h1>
+    <p>Contenu de la page...</p>
+    <br>
+    {% for categorie in categories %}
+        <h1 class="categorie_h1">{{ categorie.title }}</h1>
+        <h2 class="categorie_h2">{{ categorie.introduction }}</h2>
+        <div class="articles">
+            {% for categoryRecipe in categorie.categoryRecipes %}
+                <div class="article">
+                    <h3 class="article_title">{{ categoryRecipe.title }}</h3>
+                    <img class="article_image" src={{ categoryRecipe.image }} alt="">
+                        <a href="{{ path('app_recipe') }}">
+                            <button>Voir les recettes</button>
+                        </a>
+                    </a>
+                </div>
+            {% endfor %}
+        </div>
+    {% endfor %}
+{% endblock %}
