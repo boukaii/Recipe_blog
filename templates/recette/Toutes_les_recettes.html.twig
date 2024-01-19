@@ -1,0 +1,33 @@
+{# Ajouter une variable pour suivre si le formulaire a déjà été rendu #}
+{% set commentFormRendered = false %}
+
+{% block body %}
+    <h1 class="h1_recette">Toutes les Recettes</h1>
+
+    {% if toutesLesRecettes is not empty %}
+        <ul>
+            <div class="recettes">
+                {% for recette in toutesLesRecettes %}
+                    <li>
+                        <div class="recette">
+                            <!-- ... (votre code existant) ... -->
+
+                            {# Affiche le formulaire de commentaire uniquement si l'utilisateur est connecté et n'est pas l'auteur de la recette #}
+                            {% if app.user and app.user.id != recette.user.id %}
+                                {% if not commentFormRendered %}
+                                    {% set commentFormRendered = true %}
+                                    <form method="post" action="{{ path('recette') }}">
+                                        {{ form_row(commentForm.content) }}
+                                        {{ form_row(commentForm.submit, { 'label': 'Ajouter un commentaire' }) }}
+                                    </form>
+                                {% endif %}
+                            {% endif %}
+                        </div>
+                    </li>
+                {% endfor %}
+            </div>
+        </ul>
+    {% else %}
+        <p>Aucune recette disponible.</p>
+    {% endif %}
+{% endblock %}

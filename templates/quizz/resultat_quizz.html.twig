@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Résultats du Quizz</h1>
+
+    {% for index, quizz in quizzList %}
+        <h2>{{ quizz.question }}</h2>
+        <p>Réponse Correcte : {{ quizz.reponse_correct }}</p>
+        <p>Vos Choix : 
+            {% for choice in userChoices[index] %}
+                {{ choice }}{% if not loop.last %}, {% endif %}
+            {% endfor %}
+        </p>
+        <hr>
+    {% endfor %}
+    
+    {# Ajouter un lien pour réinitialiser le quizz automatiquement #}
+    <a href="{{ path('quizz', {'reset': true}) }}" class="btn btn-secondary">Recommencer le quizz</a>
+
+    <a href="{{ path('app_home') }}" class="btn btn-primary">Retourner à l'accueil</a>
+
+{% endblock %}

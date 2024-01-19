@@ -8,105 +8,108 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use Doctrine\Persistence\ManagerRegistry;
 use App\Repository\RecetteRepository;
 use App\Form\CommentType;
 use App\Entity\Comment;
+use Doctrine\Persistence\ManagerRegistry;
 
 class RecetteController extends AbstractController
 {
+    private $commentFormRendered = false;
 
     #[Route('/recette/new/', name: 'new_recette')]
-    public function createRecette(Request $request, ManagerRegistry $manager, RecetteRepository $RecetteRepository): Response
+    public function createRecette(Request $request, ManagerRegistry $manager): Response
     {
-        // Création d'une nouvelle instance de l'entité Post
         $recette = new Recette();
         $comment = new Comment();
-        // Création du formulaire à partir du type de formulaire associé à l'entité Post
+
         $recetteForm = $this->createForm(RecetteType::class, $recette);
         $commentForm = $this->createForm(CommentType::class, $comment);
 
-        // Traitement de la soumission du formulaire
         $recetteForm->handleRequest($request);
         $commentForm->handleRequest($request);
 
-        // Vérification si le formulaire est soumis et valide
         if ($recetteForm->isSubmitted() && $recetteForm->isValid()) {
-            // Associez la recette à l'utilisateur actuellement connecté
-            $user = $this->getUser(); // Obtenez l'utilisateur actuel
+            $user = $this->getUser();
             $recette->setUser($user);
-            // Sauvegarde du post dans la base de données
+
             $entityManager = $manager->getManager();
             $entityManager->persist($recette);
             $entityManager->flush();
 
-            // Redirection vers une page de confirmation ou une autre page de votre choix
             return $this->redirectToRoute('recette');
         }
+
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
             $user = $this->getUser();
             $comment->setUser($user);
 
-            // Associez le commentaire à la recette, vous devrez peut-être ajuster ceci en fonction de votre logique
             $recette = $comment->getRecette();
             $comment->setRecette($recette);
-
             $entityManager = $manager->getManager();
+
             $entityManager->persist($comment);
             $entityManager->flush();
 
             return $this->redirectToRoute('recette');
         }
 
-        $recettes = $RecetteRepository->findAll();
-
-        // Initialisation du tableau commentForms
-        $commentForms = [];
-        foreach ($recettes as $recette) {
-            $commentForms[$recette->getId()] = $this->createForm(CommentType::class, new Comment())->createView();
-        }
-        // Affichage du formulaire
         return $this->render('recette/new_recette.html.twig', [
-            'recettes' => $recettes,
             'recetteForm' => $recetteForm->createView(),
-            'commentForms' => $commentForms,
+            'commentForm' => $commentForm->createView(),
         ]);
     }
-    #[Route('recette/', name: 'recette')]
-    public function index(RecetteRepository $RecetteRepository, Request $request, ManagerRegistry $manager): Response
-    {
-        // Récupération de tous les posts depuis la base de données
-        $recettes = $RecetteRepository->findAll();
 
-        // Création du formulaire de commentaire
+    #[Route('/mes-recettes/', name: 'mes_recettes')]
+    public function mesRecettes(RecetteRepository $recetteRepository): Response
+    {
+        $user = $this->getUser();
+        $mesRecettes = $recetteRepository->findBy(['user' => $user]);
+
+        return $this->render('recette/mes_recettes.html.twig', [
+            'mesRecettes' => $mesRecettes,
+        ]);
+    }
+
+    #[Route('/toutes-les-recettes/', name: 'toutes_les_recettes')]
+    public function toutesLesRecettes(RecetteRepository $recetteRepository, Request $request, ManagerRegistry $manager): Response
+    {
+        $toutesLesRecettes = $recetteRepository->findAll();
         $commentForm = $this->createForm(CommentType::class, new Comment());
 
-        // Pré-remplissage des champs "User" et "Create"
+        return $this->render('recette/toutes_les_recettes.html.twig', [
+            'toutesLesRecettes' => $toutesLesRecettes,
+            'commentForm' => $commentForm->createView(),
+            'commentFormRendered' => $this->commentFormRendered,
+        ]);
+    }
+
+    public function index(RecetteRepository $recetteRepository, Request $request, ManagerRegistry $manager): Response
+    {
+        $recettes = $recetteRepository->findAll();
+
+        $commentForm = $this->createForm(CommentType::class, new Comment());
         $user = $this->getUser();
         $commentForm->get('user')->setData($user);
-
         $now = new \DateTime();
         $commentForm->get('createAt')->setData($now);
 
-        // Traitement de la soumission du formulaire de commentaire
         $commentForm->handleRequest($request);
 
         if ($commentForm->isSubmitted() && $commentForm->isValid()) {
-            // Vous devez gérer ici la sauvegarde du commentaire en associant la recette appropriée
             $user = $this->getUser();
             $comment = $commentForm->getData();
             $comment->setUser($user);
+
             $entityManager = $manager->getManager();
             $entityManager->persist($comment);
             $entityManager->flush();
 
-            // Redirection ou autre action après la soumission du formulaire de commentaire
             return $this->redirectToRoute('recette');
         }
 
-        // Affichage des recettes dans une vue Twig avec le formulaire de commentaire
-        return $this->render('recette/recette.html.twig', [
-            'recettes' => $recettes,
+        return $this->render('recette/toutes_les_recettes.html.twig', [
+            'toutesLesRecettes' => $recettes,
             'commentForm' => $commentForm->createView(),
         ]);
     }

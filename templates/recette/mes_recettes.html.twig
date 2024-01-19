@@ -1,0 +1,23 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="h1_recette">Mes Recettes</h1>
+
+    {% if mesRecettes is not empty %}
+        <ul>
+            <div class="recettes">
+                {% for recette in mesRecettes %}
+                    <li>
+                        <div class="recette">
+                            <strong>{{ recette.title }}</strong>
+                            <p>{{ recette.description }}</p>
+                            <!-- Autres détails de la recette -->
+                        </div>
+                    </li>
+                {% endfor %}
+            </div>
+        </ul>
+    {% else %}
+        <p>Aucune recette disponible.</p>
+    {% endif %}
+{% endblock %}
