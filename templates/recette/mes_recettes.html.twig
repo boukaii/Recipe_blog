@@ -2,7 +2,6 @@
 
 {% block body %}
     <h1 class="h1_recette">Mes Recettes</h1>
-
     {% if mesRecettes is not empty %}
         <ul>
             <div class="recettes">
@@ -11,7 +10,14 @@
                         <div class="recette">
                             <strong>{{ recette.title }}</strong>
                             <p>{{ recette.description }}</p>
-                            <!-- Autres détails de la recette -->
+                            <img src="{{ asset('uploads/images/' ~ recette.image) }}" alt="{{ recette.title }}">
+
+                            <!-- Bouton Modifier -->
+                            <a href="{{ path('edit_recette', {'id': recette.id}) }}" class="btn btn-primary">Modifier</a>
+                            
+                            <!-- Bouton Supprimer -->
+                            <a href="{{ path('delete_recette', {'id': recette.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette recette ?')">Supprimer</a>
+                       
                         </div>
                     </li>
                 {% endfor %}

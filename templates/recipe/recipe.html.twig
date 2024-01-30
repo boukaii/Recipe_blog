@@ -1,21 +1,30 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des Recettes{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/recipe.css') }}" />
+{% endblock %}
 
 {% block body %}
-    <h1>Liste des Recettes</h1>
+<div class="container">
+    <h1 class="h1_recipe" >Liste des Recettes</h1>
 
     {% if recipes is empty %}
         <p>Aucune recette n'est disponible pour le moment.</p>
     {% else %}
         <ul>
+        <div class="articles">
             {% for recipe in recipes %}
-                <li>{{ recipe.title }}</li>
-                <li>{{ recipe.picture }}</li>
-                <a href="{{ path('app_recipe_details') }}">
-                    <button>Voir les recettes</button>
-                </a>
+                <div class="article">
+                    <li>{{ recipe.title }}</li>
+                    <li>{{ recipe.picture }}</li>
+                    <a href="{{ path('app_recipe_details', {'id': recipe.id}) }}">
+                        <button>Voir les détails de la recette</button>
+                    </a>
+                </div>
             {% endfor %}
+        </div>
         </ul>
+</div>
     {% endif %}
 {% endblock %}

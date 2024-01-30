@@ -1,5 +1,9 @@
-{# Ajouter une variable pour suivre si le formulaire a déjà été rendu #}
-{% set commentFormRendered = false %}
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/new_recette.css') }}" />
+{% endblock %}
 
 {% block body %}
     <h1 class="h1_recette">Toutes les Recettes</h1>
@@ -10,18 +14,17 @@
                 {% for recette in toutesLesRecettes %}
                     <li>
                         <div class="recette">
-                            <!-- ... (votre code existant) ... -->
-
-                            {# Affiche le formulaire de commentaire uniquement si l'utilisateur est connecté et n'est pas l'auteur de la recette #}
-                            {% if app.user and app.user.id != recette.user.id %}
-                                {% if not commentFormRendered %}
-                                    {% set commentFormRendered = true %}
-                                    <form method="post" action="{{ path('recette') }}">
-                                        {{ form_row(commentForm.content) }}
-                                        {{ form_row(commentForm.submit, { 'label': 'Ajouter un commentaire' }) }}
-                                    </form>
-                                {% endif %}
-                            {% endif %}
+                            <strong>{{ recette.title }}</strong>
+                            <p>{{ recette.description }}</p>
+                            <img src="{{ asset('uploads/images/' ~ recette.image) }}" alt="{{ recette.title }}">
+                            
+                            {% for commentaire in recette.comments %}
+                                <div class="comment">
+                                    <p>{{ commentaire.content }}</p>
+                                    <small>{{ commentaire.user.username }} - {{ commentaire.createAt|date('Y-m-d H:i:s') }}</small>
+                                </div>
+                            {% endfor %}
+                 
                         </div>
                     </li>
                 {% endfor %}

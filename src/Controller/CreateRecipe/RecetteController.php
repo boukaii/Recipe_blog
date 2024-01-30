@@ -4,32 +4,47 @@ namespace App\Controller\CreateRecipe;
 
 use App\Entity\Recette;
 use App\Form\RecetteType;
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\Routing\Annotation\Route;
 use App\Repository\RecetteRepository;
 use App\Form\CommentType;
 use App\Entity\Comment;
 use Doctrine\Persistence\ManagerRegistry;
+use Symfony\Component\HttpFoundation\File\Exception\FileException;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\Routing\Annotation\Route;
+
 
 class RecetteController extends AbstractController
 {
-    private $commentFormRendered = false;
 
     #[Route('/recette/new/', name: 'new_recette')]
     public function createRecette(Request $request, ManagerRegistry $manager): Response
     {
         $recette = new Recette();
-        $comment = new Comment();
 
         $recetteForm = $this->createForm(RecetteType::class, $recette);
-        $commentForm = $this->createForm(CommentType::class, $comment);
 
         $recetteForm->handleRequest($request);
-        $commentForm->handleRequest($request);
 
         if ($recetteForm->isSubmitted() && $recetteForm->isValid()) {
+           
+
+            $imageFile = $recetteForm['image']->getData();
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+                try {
+                    $imageFile->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                    // Gestion des erreurs de déplacement du fichier
+                }
+                $recette->setImage($newFilename);
+            }
+
             $user = $this->getUser();
             $recette->setUser($user);
 
@@ -37,27 +52,67 @@ class RecetteController extends AbstractController
             $entityManager->persist($recette);
             $entityManager->flush();
 
-            return $this->redirectToRoute('recette');
-        }
-
-        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
-            $user = $this->getUser();
-            $comment->setUser($user);
-
-            $recette = $comment->getRecette();
-            $comment->setRecette($recette);
-            $entityManager = $manager->getManager();
-
-            $entityManager->persist($comment);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('recette');
+            return $this->redirectToRoute('mes_recettes');
         }
 
         return $this->render('recette/new_recette.html.twig', [
             'recetteForm' => $recetteForm->createView(),
-            'commentForm' => $commentForm->createView(),
         ]);
+    }
+
+    #[Route('/edit_recette/{id}', name: 'edit_recette')]
+    public function editRecette($id, Request $request, ManagerRegistry $manager, RecetteRepository $recetteRepository): Response
+    {
+        $recette = $recetteRepository->find($id);
+    
+        if (!$recette || $recette->getUser() !== $this->getUser()) {
+            throw $this->createNotFoundException('Recette non trouvée ou vous n\'êtes pas autorisé à la modifier.');
+        }
+    
+        $form = $this->createForm(RecetteType::class, $recette);
+        $form->handleRequest($request);
+    
+        if ($form->isSubmitted() && $form->isValid()) {
+            $imageFile = $form['image']->getData();
+    
+            if ($imageFile) {
+                $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
+                $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+                try {
+                    $imageFile->move(
+                        $this->getParameter('images_directory'),
+                        $newFilename
+                    );
+                } catch (FileException $e) {
+                }
+                $recette->setImage($newFilename);
+            }
+    
+            $entityManager = $manager->getManager();
+            $entityManager->flush();
+    
+            return $this->redirectToRoute('mes_recettes');
+        }
+    
+        return $this->render('recette/edit_recette.html.twig', [
+            'form' => $form->createView(),
+        ]);
+    }
+    
+    #[Route('/delete_recette/{id}', name: 'delete_recette')]
+    public function deleteRecette($id, ManagerRegistry $manager, RecetteRepository $recetteRepository): Response
+    {
+        $recette = $recetteRepository->find($id);
+
+        if (!$recette || $recette->getUser() !== $this->getUser()) {
+            throw $this->createNotFoundException('Recette non trouvée ou vous n\'êtes pas autorisé à la supprimer.');
+        }
+
+        $entityManager = $manager->getManager();
+        $entityManager->remove($recette);
+        $entityManager->flush();
+
+        return $this->redirectToRoute('mes_recettes');
     }
 
     #[Route('/mes-recettes/', name: 'mes_recettes')]
@@ -72,19 +127,31 @@ class RecetteController extends AbstractController
     }
 
     #[Route('/toutes-les-recettes/', name: 'toutes_les_recettes')]
-    public function toutesLesRecettes(RecetteRepository $recetteRepository, Request $request, ManagerRegistry $manager): Response
+    public function toutesLesRecettes(RecetteRepository $recetteRepository): Response
     {
         $toutesLesRecettes = $recetteRepository->findAll();
-        $commentForm = $this->createForm(CommentType::class, new Comment());
 
         return $this->render('recette/toutes_les_recettes.html.twig', [
             'toutesLesRecettes' => $toutesLesRecettes,
-            'commentForm' => $commentForm->createView(),
-            'commentFormRendered' => $this->commentFormRendered,
         ]);
     }
 
-    public function index(RecetteRepository $recetteRepository, Request $request, ManagerRegistry $manager): Response
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public function comment(RecetteRepository $recetteRepository, Request $request, ManagerRegistry $manager): Response
     {
         $recettes = $recetteRepository->findAll();
 
@@ -113,4 +180,10 @@ class RecetteController extends AbstractController
             'commentForm' => $commentForm->createView(),
         ]);
     }
+
+
+
+
+
+
 }

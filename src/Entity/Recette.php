@@ -21,7 +21,7 @@ class Recette
     #[ORM\Column(length: 255)]
     private ?string $description = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(type: 'text', nullable: true)]
     private ?string $image = null;
 
     #[ORM\OneToMany(mappedBy: 'recette', targetEntity: Comment::class, orphanRemoval: true)]

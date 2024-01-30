@@ -1,0 +1,17 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1 class="h1_recette">Modifier la Recette</h1>
+    
+    {{ form_start(form) }}
+    {{ form_row(form.title) }}
+    {{ form_row(form.description) }}
+    
+    <!-- Champ pour l'image -->
+    {{ form_row(form.image) }}
+    
+    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
+    {{ form_end(form) }}
+
+    <a href="{{ path('mes_recettes') }}" class="btn btn-secondary">Annuler</a>
+{% endblock %}

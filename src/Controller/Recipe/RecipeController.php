@@ -9,11 +9,11 @@ use App\Repository\RecipeRepository;
 
 class RecipeController extends AbstractController
 {
-    #[Route('/recipe', name: 'app_recipe')]
-    public function index(RecipeRepository $RecipeRepository): Response
+    #[Route('/recipe/{id}', name: 'app_recipe')]
+    public function index($id, RecipeRepository $RecipeRepository): Response
     {
 
-        $recipes = $RecipeRepository->findAll();
+        $recipes = $RecipeRepository->find($id);
 
         return $this->render('recipe/recipe.html.twig', [
             'controller_name' => 'RecipeController',
