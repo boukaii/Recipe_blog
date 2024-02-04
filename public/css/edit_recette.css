@@ -10,9 +10,8 @@
 .title_recettes {
     color: #333;
     font-size: 24px;
-    margin-bottom: 5%;
+    margin-bottom: 20px;
     text-align: center;
-    margin-top: 5%;
 }
 .title_form,
 .description_form,
@@ -27,7 +26,6 @@
     margin-bottom: 5px;
     font-weight: bold;
 }
-
 .title_form input,
 .description_form textarea,
 .image_form input {
@@ -47,6 +45,7 @@
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
+    margin-bottom: 5%;
 }
 .button_form:hover {
     background-color: #45a049;

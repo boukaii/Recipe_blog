@@ -43,15 +43,14 @@
                 {% for categoryRecipe in categorie.categoryRecipes %}
                     <div class="article">
                         <h3 class="article_title">{{ categoryRecipe.title }}</h3>
-                        <img class="article_image" src="{{ asset(categoryRecipe.image) }}" alt="{{ categoryRecipe.title }}">
+                        <img class="article_image" src="{{ categoryRecipe.image }}" alt="{{ categoryRecipe.title }}">
+                    
 
                         <a href="{{ path('app_recipe', {'id': categoryRecipe.id}) }}">
                             <button>Voir les détails de la recette</button>
                         </a>
-
                     </div>
                 {% endfor %}
-
             </div>
         {% endfor %}
     </section>

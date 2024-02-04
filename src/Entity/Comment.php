@@ -18,7 +18,7 @@ class Comment
     #[ORM\Column(type: Types::TEXT)]
     private ?string $content = null;
 
-    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    #[ORM\Column(type: Types::DATETIME_MUTABLE, )]
     private ?\DateTimeInterface $createAt = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
@@ -28,6 +28,8 @@ class Comment
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
     private ?User $user = null;
+    
+
     
     public function getId(): ?int
     {

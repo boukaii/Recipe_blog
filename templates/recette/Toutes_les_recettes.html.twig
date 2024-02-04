@@ -2,29 +2,44 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/new_recette.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/toutes_les_recettes.css') }}" />
 {% endblock %}
 
 {% block body %}
+
     <h1 class="h1_recette">Toutes les Recettes</h1>
 
     {% if toutesLesRecettes is not empty %}
         <ul>
             <div class="recettes">
+
+   
                 {% for recette in toutesLesRecettes %}
                     <li>
                         <div class="recette">
+
                             <strong>{{ recette.title }}</strong>
                             <p>{{ recette.description }}</p>
                             <img src="{{ asset('uploads/images/' ~ recette.image) }}" alt="{{ recette.title }}">
-                            
+                            <p>Publié par : {{ recette.user.username }}</p>
+
+                            {# Ajoutez une balise de bouton pour afficher/masquer les commentaires #}
+                            <button class="toggle-comments-btn" data-recipe-id="{{ recette.id }}">Afficher/Masquer les Commentaires</button>
+
                             {% for commentaire in recette.comments %}
-                                <div class="comment">
+                                {# Ajoutez une classe unique basée sur l'ID de la recette pour chaque commentaire #}
+                                <div class="comment hide-comments recette-{{ recette.id }}" data-recipe-id="{{ recette.id }}">
+                                    <small>Commentaire de {{ commentaire.user.username }} - créé le  {{ commentaire.createAt|date('Y-m-d H:i:s') }}</small>
                                     <p>{{ commentaire.content }}</p>
-                                    <small>{{ commentaire.user.username }} - {{ commentaire.createAt|date('Y-m-d H:i:s') }}</small>
                                 </div>
                             {% endfor %}
-                 
+
+                            {# Formulaire de commentaire spécifique à chaque recette #}
+                            {{ form_start(commentForms[recette.id]) }}
+                            {{ form_row(commentForms[recette.id].content) }}
+                            {{ form_row(commentForms[recette.id].submit) }}
+                            {{ form_end(commentForms[recette.id]) }}
+
                         </div>
                     </li>
                 {% endfor %}
@@ -33,4 +48,22 @@
     {% else %}
         <p>Aucune recette disponible.</p>
     {% endif %}
+
+    <script>
+        var buttons = document.querySelectorAll('.toggle-comments-btn');
+
+        buttons.forEach(function(button) {
+            button.addEventListener('click', function() {
+                var recipeId = button.dataset.recipeId;
+
+                // Utilisez querySelector pour cibler spécifiquement les commentaires de la recette associée
+                var comments = document.querySelectorAll('.comment.recette-' + recipeId);
+
+                comments.forEach(function(comment) {
+                    comment.classList.toggle('hide-comments');
+                });
+            });
+        });
+    </script>
+
 {% endblock %}

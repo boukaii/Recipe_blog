@@ -1,20 +1,18 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Liste des Détails de Recettes{% endblock %}
+{% block title %}Détails de la Recette{% endblock %}
 
 {% block body %}
-    <h1>Liste des Détails de Recettes</h1>
+    <h1>Détails de la Recette</h1>
 
-    {% if recipeDetails is empty %}
+    {% if not recipeDetails %}
         <p>Aucun détail de recette n'est disponible pour le moment.</p>
     {% else %}
         <ul>
-            {% for detail in recipeDetails %}
-                <li>{{ detail.title }}</li>
-                <li>{{ detail.description }}</li>
-                <li>{{ detail.picture}}</li>
-                <li>{{ detail.ingredients }}</li>
-            {% endfor %}
+            <li>{{ recipeDetails.title }}</li>
+            <li>{{ recipeDetails.description }}</li>
+            <li>{{ recipeDetails.picture }}</li>
+            <li>{{ recipeDetails.ingredients }}</li>
         </ul>
     {% endif %}
 {% endblock %}

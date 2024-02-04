@@ -1,31 +1,38 @@
-.form_recette {
-    margin: 20px auto;
-    max-width: 500px;
-    padding: 20px;
-    border: 2px solid #ddd;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-    text-align: center;
-}
-.title_recettes {
+h1 {
     color: #333;
     font-size: 24px;
     margin-bottom: 5%;
     text-align: center;
     margin-top: 5%;
 }
+.form_quizz {
+    margin: 20px auto;
+    max-width: 250px;
+    padding: 20px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+}
+
+.title_quizz,
+.title_form {
+    color: #333;
+    font-size: 24px;
+    margin-bottom: 20px;
+    text-align: center;
+}
 .title_form,
 .description_form,
 .image_form {
-    text-align: left;
     margin-bottom: 20px;
 }
+
 .title_form label,
 .description_form label,
 .image_form label {
     display: block;
     margin-bottom: 5px;
-    font-weight: bold;
 }
 
 .title_form input,
@@ -38,7 +45,8 @@
     margin-top: 8px;
     box-sizing: border-box;
 }
-.button_form {
+
+.button_quizz {
     background-color: #4caf50;
     color: white;
     padding: 12px 20px;
@@ -47,10 +55,13 @@
     cursor: pointer;
     font-size: 16px;
     transition: background-color 0.3s;
+    margin-bottom: 5%;
 }
-.button_form:hover {
+
+.button_quizz:hover {
     background-color: #45a049;
 }
+
 .form-errors {
     color: #ff0000;
     margin-top: 10px;

@@ -12,8 +12,9 @@ use Doctrine\Persistence\ManagerRegistry;
 use Symfony\Component\HttpFoundation\File\Exception\FileException;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\Routing\Annotation\Route;
-
+use Symfony\Component\Form\FormFactoryInterface;
 
 class RecetteController extends AbstractController
 {
@@ -28,12 +29,12 @@ class RecetteController extends AbstractController
         $recetteForm->handleRequest($request);
 
         if ($recetteForm->isSubmitted() && $recetteForm->isValid()) {
-           
+
 
             $imageFile = $recetteForm['image']->getData();
             if ($imageFile) {
                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+                $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
                 try {
                     $imageFile->move(
                         $this->getParameter('images_directory'),
@@ -64,20 +65,20 @@ class RecetteController extends AbstractController
     public function editRecette($id, Request $request, ManagerRegistry $manager, RecetteRepository $recetteRepository): Response
     {
         $recette = $recetteRepository->find($id);
-    
+
         if (!$recette || $recette->getUser() !== $this->getUser()) {
             throw $this->createNotFoundException('Recette non trouvée ou vous n\'êtes pas autorisé à la modifier.');
         }
-    
+
         $form = $this->createForm(RecetteType::class, $recette);
         $form->handleRequest($request);
-    
+
         if ($form->isSubmitted() && $form->isValid()) {
             $imageFile = $form['image']->getData();
-    
+
             if ($imageFile) {
                 $originalFilename = pathinfo($imageFile->getClientOriginalName(), PATHINFO_FILENAME);
-                $newFilename = $originalFilename.'-'.uniqid().'.'.$imageFile->guessExtension();
+                $newFilename = $originalFilename . '-' . uniqid() . '.' . $imageFile->guessExtension();
                 try {
                     $imageFile->move(
                         $this->getParameter('images_directory'),
@@ -87,18 +88,18 @@ class RecetteController extends AbstractController
                 }
                 $recette->setImage($newFilename);
             }
-    
+
             $entityManager = $manager->getManager();
             $entityManager->flush();
-    
+
             return $this->redirectToRoute('mes_recettes');
         }
-    
+
         return $this->render('recette/edit_recette.html.twig', [
             'form' => $form->createView(),
         ]);
     }
-    
+
     #[Route('/delete_recette/{id}', name: 'delete_recette')]
     public function deleteRecette($id, ManagerRegistry $manager, RecetteRepository $recetteRepository): Response
     {
@@ -127,63 +128,57 @@ class RecetteController extends AbstractController
     }
 
     #[Route('/toutes-les-recettes/', name: 'toutes_les_recettes')]
-    public function toutesLesRecettes(RecetteRepository $recetteRepository): Response
+    public function toutesLesRecettes(RecetteRepository $recetteRepository, Request $request, ManagerRegistry $manager, FormFactoryInterface $formFactory): Response
     {
         $toutesLesRecettes = $recetteRepository->findAll();
+        $commentForms = [];
 
-        return $this->render('recette/toutes_les_recettes.html.twig', [
-            'toutesLesRecettes' => $toutesLesRecettes,
-        ]);
-    }
+        foreach ($toutesLesRecettes as $recette) {
+            $commentForm = $formFactory->createNamedBuilder(
+                'comment_' . $recette->getId(),
+                CommentType::class
+            )
+            ->getForm();
 
+            $commentForms[$recette->getId()] = $commentForm->createView();
 
+            $commentForm->handleRequest($request);
 
+            // Ajoutez une condition pour exécuter le code uniquement si le formulaire n'est pas soumis
+            if (!$commentForm->isSubmitted()) {
+                continue;
+            }
 
+            if ($commentForm->isValid()) {
+                $comment = $commentForm->getData();
+                $comment->setRecette($recette);
 
+                $user = $this->getUser();
+                if ($user) {
+                    $comment->setUser($user);
+                } else {
+                    // Gérez le cas où l'utilisateur n'est pas connecté
+                }
 
+                $comment->setCreateAt(new \DateTime());
 
+                $entityManager = $manager->getManager();
+                $entityManager->persist($comment);
+                $entityManager->flush();
 
-
-
-
-
-
-
-
-
-    public function comment(RecetteRepository $recetteRepository, Request $request, ManagerRegistry $manager): Response
-    {
-        $recettes = $recetteRepository->findAll();
-
-        $commentForm = $this->createForm(CommentType::class, new Comment());
-        $user = $this->getUser();
-        $commentForm->get('user')->setData($user);
-        $now = new \DateTime();
-        $commentForm->get('createAt')->setData($now);
-
-        $commentForm->handleRequest($request);
-
-        if ($commentForm->isSubmitted() && $commentForm->isValid()) {
-            $user = $this->getUser();
-            $comment = $commentForm->getData();
-            $comment->setUser($user);
-
-            $entityManager = $manager->getManager();
-            $entityManager->persist($comment);
-            $entityManager->flush();
-
-            return $this->redirectToRoute('recette');
+                // Réinitialisez le formulaire pour éviter la création automatique lors de l'actualisation
+                $commentForms[$recette->getId()] = $formFactory->createNamedBuilder(
+                    'comment_' . $recette->getId(),
+                    CommentType::class
+                )->getForm()->createView();
+            }
         }
 
         return $this->render('recette/toutes_les_recettes.html.twig', [
-            'toutesLesRecettes' => $recettes,
-            'commentForm' => $commentForm->createView(),
+            'toutesLesRecettes' => $toutesLesRecettes,
+            'commentForms' => $commentForms,
         ]);
     }
-
-
-
-
 
 
 }

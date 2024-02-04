@@ -1,11 +1,18 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/mes_recettes.css') }}" />
+{% endblock %}
+
 {% block body %}
     <h1 class="h1_recette">Mes Recettes</h1>
     {% if mesRecettes is not empty %}
-        <ul>
+        
             <div class="recettes">
+            
                 {% for recette in mesRecettes %}
+                <ul>
                     <li>
                         <div class="recette">
                             <strong>{{ recette.title }}</strong>
@@ -20,9 +27,11 @@
                        
                         </div>
                     </li>
+                </ul>
                 {% endfor %}
+            
             </div>
-        </ul>
+        
     {% else %}
         <p>Aucune recette disponible.</p>
     {% endif %}

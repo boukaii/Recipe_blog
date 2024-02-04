@@ -1,17 +1,26 @@
 {% extends 'base.html.twig' %}
 
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/edit_recette.css') }}" />
+{% endblock %}
+
+
 {% block body %}
     <h1 class="h1_recette">Modifier la Recette</h1>
-    
-    {{ form_start(form) }}
-    {{ form_row(form.title) }}
-    {{ form_row(form.description) }}
-    
-    <!-- Champ pour l'image -->
-    {{ form_row(form.image) }}
-    
-    <button type="submit" class="btn btn-primary">Enregistrer les modifications</button>
-    {{ form_end(form) }}
+    <div class="form_recette">
 
-    <a href="{{ path('mes_recettes') }}" class="btn btn-secondary">Annuler</a>
+        {{ form_start(form) }}
+
+        <div class="title_form">{{ form_row(form.title) }}</div>
+        <div class="description_form">{{ form_row(form.description) }}</div>
+        <div class="image_form">{{ form_row(form.image) }}</div>
+        
+        <button type="submit" class="button_form">Enregistrer les modifications</button>
+        {{ form_end(form) }}
+
+        <a href="{{ path('mes_recettes') }}" class="button_form">Annuler</a>
+    </div>
+
 {% endblock %}

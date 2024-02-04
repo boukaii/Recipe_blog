@@ -1,16 +1,23 @@
-.article{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #4caf50;
-  }
-  .articles{
-    display: flex;
-    justify-content: space-around;
-  }
-
 .h1_recipe{
     text-align: center;
     margin-top: 10%;
     margin-bottom: 10%;
+}
+.articles{
+  display: flex;
+  justify-content: space-around;
+}
+.article{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  color: #4caf50;
+}
+.article_image{
+  margin-top: 5%;
+  margin-bottom: 5%;
+}
+img {
+  max-width: 250px;
+  max-height: 150px;
 }
