@@ -19,10 +19,8 @@
                             <p>{{ recette.description }}</p>
                             <img src="{{ asset('uploads/images/' ~ recette.image) }}" alt="{{ recette.title }}">
 
-                            <!-- Bouton Modifier -->
                             <a href="{{ path('edit_recette', {'id': recette.id}) }}" class="btn btn-primary">Modifier</a>
                             
-                            <!-- Bouton Supprimer -->
                             <a href="{{ path('delete_recette', {'id': recette.id}) }}" class="btn btn-danger" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette recette ?')">Supprimer</a>
                        
                         </div>

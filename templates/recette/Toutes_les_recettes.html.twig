@@ -23,18 +23,15 @@
                             <img src="{{ asset('uploads/images/' ~ recette.image) }}" alt="{{ recette.title }}">
                             <p>Publié par : {{ recette.user.username }}</p>
 
-                            {# Ajoutez une balise de bouton pour afficher/masquer les commentaires #}
                             <button class="toggle-comments-btn" data-recipe-id="{{ recette.id }}">Afficher/Masquer les Commentaires</button>
 
                             {% for commentaire in recette.comments %}
-                                {# Ajoutez une classe unique basée sur l'ID de la recette pour chaque commentaire #}
                                 <div class="comment hide-comments recette-{{ recette.id }}" data-recipe-id="{{ recette.id }}">
                                     <small>Commentaire de {{ commentaire.user.username }} - créé le  {{ commentaire.createAt|date('Y-m-d H:i:s') }}</small>
                                     <p>{{ commentaire.content }}</p>
                                 </div>
                             {% endfor %}
 
-                            {# Formulaire de commentaire spécifique à chaque recette #}
                             {{ form_start(commentForms[recette.id]) }}
                             {{ form_row(commentForms[recette.id].content) }}
                             {{ form_row(commentForms[recette.id].submit) }}
@@ -56,7 +53,6 @@
             button.addEventListener('click', function() {
                 var recipeId = button.dataset.recipeId;
 
-                // Utilisez querySelector pour cibler spécifiquement les commentaires de la recette associée
                 var comments = document.querySelectorAll('.comment.recette-' + recipeId);
 
                 comments.forEach(function(comment) {

@@ -144,7 +144,6 @@ class RecetteController extends AbstractController
 
             $commentForm->handleRequest($request);
 
-            // Ajoutez une condition pour exécuter le code uniquement si le formulaire n'est pas soumis
             if (!$commentForm->isSubmitted()) {
                 continue;
             }
@@ -157,7 +156,6 @@ class RecetteController extends AbstractController
                 if ($user) {
                     $comment->setUser($user);
                 } else {
-                    // Gérez le cas où l'utilisateur n'est pas connecté
                 }
 
                 $comment->setCreateAt(new \DateTime());
@@ -166,7 +164,6 @@ class RecetteController extends AbstractController
                 $entityManager->persist($comment);
                 $entityManager->flush();
 
-                // Réinitialisez le formulaire pour éviter la création automatique lors de l'actualisation
                 $commentForms[$recette->getId()] = $formFactory->createNamedBuilder(
                     'comment_' . $recette->getId(),
                     CommentType::class

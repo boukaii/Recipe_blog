@@ -1,6 +1,5 @@
 <?php
 
-// src/Form/CommentType.php
 
 namespace App\Form;
 
@@ -26,7 +25,7 @@ class CommentType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults([
-            'data_class' => 'App\Entity\Comment', // Assurez-vous que le chemin de la classe Comment est correct
+            'data_class' => 'App\Entity\Comment', 
         ]);
     }
 }
