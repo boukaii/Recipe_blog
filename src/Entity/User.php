@@ -31,15 +31,15 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     #[ORM\Column]
     private ?string $password = null;
 
-    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Recette::class, orphanRemoval: true)]
-    private Collection $recettes;
+    #[ORM\OneToMany(mappedBy: 'user', targetEntity: Recipe::class, orphanRemoval: true)]
+    private Collection $recipes;
 
     #[ORM\OneToMany(mappedBy: 'user', targetEntity: Comment::class, orphanRemoval: true)]
     private Collection $comments;
 
     public function __construct()
     {
-        $this->recettes = new ArrayCollection();
+        $this->recipes = new ArrayCollection();
         $this->comments = new ArrayCollection();
     }
 
@@ -116,29 +116,29 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
     }
 
     /**
-     * @return Collection<int, Recette>
+     * @return Collection<int, Recipe>
      */
-    public function getRecettes(): Collection
+    public function getRecipes(): Collection
     {
-        return $this->recettes;
+        return $this->recipes;
     }
 
-    public function addRecette(Recette $recette): static
+    public function addRecipe(Recipe $recipe): static
     {
-        if (!$this->recettes->contains($recette)) {
-            $this->recettes->add($recette);
-            $recette->setUser($this);
+        if (!$this->recipes->contains($recipe)) {
+            $this->recipes->add($recipe);
+            $recipe->setUser($this);
         }
 
         return $this;
     }
 
-    public function removeRecette(Recette $recette): static
+    public function removeRecipe(Recipe $recipe): static
     {
-        if ($this->recettes->removeElement($recette)) {
+        if ($this->recipes->removeElement($recipe)) {
             // set the owning side to null (unless already changed)
-            if ($recette->getUser() === $this) {
-                $recette->setUser(null);
+            if ($recipe->getUser() === $this) {
+                $recipe->setUser(null);
             }
         }
         return $this;

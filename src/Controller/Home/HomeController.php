@@ -5,22 +5,23 @@ namespace App\Controller\Home;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use App\Repository\CategorieRepository;
-use App\Repository\CategoryRecipeRepository;
+use App\Repository\home\ContinentCategoryRepository;
+use App\Repository\home\CountryCategoryRepository;
+
 
 class HomeController extends AbstractController
 {
 
     #[Route('', name: 'app_home')]
-    public function categorie(CategorieRepository $CategorieRepository, CategoryRecipeRepository $CategoryRecipeRepository): Response
+    public function index(ContinentCategoryRepository $ContinentCategoryRepository, CountryCategoryRepository $CountryCategoryRepository): Response
     {
-        $categories = $CategorieRepository->findAll();
-        $categoryRecipes = $CategoryRecipeRepository->findAll();
+        $continentCategories = $ContinentCategoryRepository->findAll();
+        $countryCategories = $CountryCategoryRepository->findAll();
 
         return $this->render('home/home.html.twig', [
             'controller_name' => 'HomeController',
-            'categories' => $categories,
-            'categoryRecipes' => $categoryRecipes,
+            'continentCategories' => $continentCategories,
+            'countryCategories' => $countryCategories,
         ]);
     }
 }

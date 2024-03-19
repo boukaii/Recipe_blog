@@ -2,20 +2,21 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link rel="stylesheet" href="{{ asset('css/quizz.css') }}" />
+    <link rel="stylesheet" href="{{ asset('css/quizz/quizz.css') }}" />
 {% endblock %}
 
 {% block body %}
 
-    <h1>Bienvenue sur le quizz, tentez votre chance !</h1>
+    <div class="title_and_line">
+        <h1 class="title_quizz_recettes">Bienvenue sur le quizz, tentez votre chance !</h1>
+        <hr class="line-quizz_recette" />
+    </div>
 
     <div class="form_quizz">
         <h2 class="title_quizz">{{ quizz.question }}</h2>
-
         {% if quizz.image %}
             <img src="{{ asset(quizz.image) }}" alt="{{ quizz.question }}" class="image_form">
         {% endif %}
-
         <h2 class="title_form">Réponse :</h2>
         <form method="post" action="{{ path('quizz') }}">
             <ul>

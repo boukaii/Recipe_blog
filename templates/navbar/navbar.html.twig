@@ -1,9 +1,10 @@
 <nav class="navbar">
-    <a href="{{ path('app_home') }}" class="logo">FOOD.Travel</a>
+<hr class="line1-navbar" />
     <div class="nav-links">
+    <img src="{{ asset('images/blog3.png') }}" alt="Nom de l'image" class="nav-logo" />
         <ul>
             <li><a href="{{ path('app_home') }}">Recettes du monde</a></li>
-            <li><a href="{{ path('new_recette') }}">Créer vos recettes</a></li>
+            <li><a href="{{ path('createRecipe') }}">Créer vos recettes</a></li>
             <li><a href="{{ path('mes_recettes') }}">Vos recettes</a></li>
             <li><a href="{{ path('toutes_les_recettes') }}">Toutes les recettes</a></li>
             <li><a href="{{ path('quizz') }}">Quizz</a></li>
@@ -19,4 +20,5 @@
             {% endif %}
         </ul>
     </div>
+<hr class="line1-navbar" />
 </nav>

@@ -1,21 +1,37 @@
 {% extends 'base.html.twig' %}
 
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/quizz/resultat_quizz.css') }}"/>
+{% endblock %}
+
 {% block body %}
-    <h1>Résultats du Quizz</h1>
 
-    {% for index, quizz in quizzList %}
-        <h2>{{ quizz.question }}</h2>
-        <p>Réponse Correcte : {{ quizz.reponse_correct }}</p>
-        <p>Vos Choix : 
-            {% for choice in userChoices[index] %}
-                {{ choice }}{% if not loop.last %}, {% endif %}
-            {% endfor %}
-        </p>
-        <hr>
-    {% endfor %}
-    
-    <a href="{{ path('quizz', {'reset': true}) }}" class="btn btn-secondary">Recommencer le quizz</a>
+	<div class="title_and_line">
+		<h1 class="title_quizz_result">Résultat de votre Quizz !</h1>
+		<hr class="line-quizz_result"/>
+	</div>
 
-    <a href="{{ path('app_home') }}" class="btn btn-primary">Retourner à l'accueil</a>
+    <div class="form-quizz-result">
+        {% for index, quizz in quizzList %}
+            <h2 class="question-quizz">{{ quizz.question }}</h2>
 
+            <p class="text-quizz-result">Réponse Correcte :</p>
+
+            <p class="text-quizz-result2">{{ quizz.reponse_correct }}</p>
+
+            <p class="text-quizz-result">Votre réponse :</p>
+
+                {% for choice in userChoices[index] %}
+                    <p class="text-quizz-result2">{{ choice }}</p>
+                    {% if not loop.last %}
+                    {% endif %}
+                {% endfor %}
+            <hr class="hr_result_quizz">
+        {% endfor %}
+        <div class="button-quizz-result">
+            <a href="{{ path('quizz', {'reset': true}) }}" class="button_form_result_quizz">Recommencer le quizz</a>
+            <a href="{{ path('app_home') }}" class="button_form_result_quizz">Retourner à l'accueil</a>
+        </div>
+    </div>
 {% endblock %}

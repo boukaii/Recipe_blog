@@ -19,19 +19,24 @@ class Recipe
     private ?string $title = null;
 
     #[ORM\Column(length: 255)]
-    private ?string $picture = null;
+    private ?string $description = null;
+
+    #[ORM\Column(type: 'text', nullable: true)]
+    private ?string $image = null;
+
+    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: Comment::class, orphanRemoval: true)]
+    private Collection $comments;
 
     #[ORM\ManyToOne(inversedBy: 'recipes')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?CategoryRecipe $categoryRecipe = null;
+    private ?User $user = null;
 
-    #[ORM\OneToMany(mappedBy: 'recipe', targetEntity: RecipeDetails::class, orphanRemoval: true)]
-    private Collection $recipeDetails;
 
     public function __construct()
     {
-        $this->recipeDetails = new ArrayCollection();
+        $this->comments = new ArrayCollection();
     }
+
 
     public function getId(): ?int
     {
@@ -50,56 +55,72 @@ class Recipe
         return $this;
     }
 
-    public function getPicture(): ?string
+    public function getDescription(): ?string
     {
-        return $this->picture;
+        return $this->description;
     }
 
-    public function setPicture(string $picture): static
+    public function setDescription(string $description): static
     {
-        $this->picture = $picture;
+        $this->description = $description;
 
         return $this;
     }
 
-    public function getCategoryRecipe(): ?CategoryRecipe
+    public function getImage(): ?string
     {
-        return $this->categoryRecipe;
+        return $this->image;
     }
 
-    public function setCategoryRecipe(?CategoryRecipe $categoryRecipe): static
+    public function setImage(string $image): static
     {
-        $this->categoryRecipe = $categoryRecipe;
+        $this->image = $image;
 
         return $this;
     }
 
     /**
-     * @return Collection<int, RecipeDetails>
+     * @return Collection<int, Comment>
      */
-    public function getRecipeDetails(): Collection
+    public function getComments(): Collection
     {
-        return $this->recipeDetails;
+        return $this->comments;
     }
 
-    public function addRecipeDetail(RecipeDetails $recipeDetail): static
+    public function addComment(Comment $comment): static
     {
-        if (!$this->recipeDetails->contains($recipeDetail)) {
-            $this->recipeDetails->add($recipeDetail);
-            $recipeDetail->setRecipe($this);
+        if (!$this->comments->contains($comment)) {
+            $this->comments->add($comment);
+            $comment->setRecipe($this);
         }
 
         return $this;
     }
 
-    public function removeRecipeDetail(RecipeDetails $recipeDetail): static
+    public function removeComment(Comment $comment): static
     {
-        if ($this->recipeDetails->removeElement($recipeDetail)) {
+        if ($this->comments->removeElement($comment)) {
             // set the owning side to null (unless already changed)
-            if ($recipeDetail->getRecipe() === $this) {
-                $recipeDetail->setRecipe(null);
+            if ($comment->getRecipe() === $this) {
+                $comment->setRecipe(null);
             }
         }
+
+        return $this;
+    }
+    public function __toString(): string
+    {
+        return $this->title; // ou une autre propriété qui représente de manière unique la recette
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): static
+    {
+        $this->user = $user;
 
         return $this;
     }

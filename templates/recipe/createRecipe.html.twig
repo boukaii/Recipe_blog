@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('css/recipe/createRecipe.css') }}" />
+{% endblock %}
+
+
+{% block body %}
+    <div class="title_and_line">
+        <h1 class="title_new_recettes">Créez et partagez vos idées de délices</h1>
+        <hr class="line-new_recette" />
+    </div>
+
+    <div class="form_recette">
+        {{ form_errors(recetteForm) }}
+        {{ form_start(recetteForm, {'attr': {'method': 'POST'}}) }}
+        <div class="title_form">{{ form_row(recetteForm.title, { 'label': 'Titre : ' }) }}</div>
+        <div class="description_form">{{ form_row(recetteForm.description, { 'label': 'Description : ' }) }}</div>
+        <div class="image_form">{{ form_row(recetteForm.image, { 'label': 'Image : ' }) }}</div>
+        <button class="button_form" type="submit">Créer la recette</button>
+    </div>
+    {{ form_end(recetteForm) }}
+
+{% endblock %}

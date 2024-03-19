@@ -6,52 +6,31 @@
 {% endblock %}
 
 {% block body %}
-    <section id="home">
-        <h1>FoodTravel</h1>
-        <p>Bienvenue sur "FOOD.Travel" – Votre Destination Culinaire !</p>
 
-        <article>
-            <p>Découvrez un monde de saveurs exquises et d'aventures gustatives sur notre blog dédié à la passion de la nourriture. 
-            <br>Chez "FOOD.Travel", nous célébrons la diversité culinaire à travers la création de recettes uniques et des défis excitants de quiz.</p>
+    {% for continentCategory in continentCategories %}
 
-            <h2>Explorez la Créativité Culinaire :</h2>
-            <p>Notre plateforme vous offre l'opportunité de partager et de créer des recettes exceptionnelles. 
-            <br>Que vous soyez un amateur passionné ou un chef chevronné, 
-            <br>notre espace convivial vous permet de mettre en avant vos talents culinaires. 
-            <br>Partagez vos secrets de cuisine, explorez de nouvelles combinaisons de saveurs et inspirez d'autres amateurs de cuisine.</p>
+        <div class="title_and_line">
+            <h1 class="categorie_h1">{{ continentCategory.title }}</h1>
+            <hr class="line-quizz_recette" />
+        </div>
 
-            <h2>Relevez le Défi des Quiz Culinaires :</h2>
-            <p>Testez vos connaissances gastronomiques avec nos quiz captivants. 
-            <br>Des questions intrigantes sur les ingrédients aux énigmes sur les cuisines du monde, 
-            <br>nos quiz sont conçus pour divertir et éduquer. 
-            <br>Apprenez de nouvelles anecdotes culinaires tout en vous amusant, et découvrez à quel point votre palais est aiguisé.</p>
+        <h2 class="categorie_h2">{{ continentCategory.introduction }}</h2>
 
-            <h2>Rejoignez une Communauté Passionnée :</h2>
-            <p>Connectez-vous avec d'autres passionnés de gastronomie. 
-            <br>Discutez des dernières tendances alimentaires, échangez des conseils de cuisine et partagez votre amour pour la bonne nourriture. 
-            <br>"FOOD.Travel" est l'endroit où les amateurs de cuisine se retrouvent pour créer, apprendre et s'inspirer mutuellement.</p>
+        <div class="articles">
+            {% for countryCategory in continentCategory.countryCategories %}
 
-            <h4>Explorez, créez, apprenez et partagez votre amour pour la cuisine sur "FOOD.Travel". 
-            <br>Que l'aventure gastronomique commence !</h4>
-        </article>
-        <br>
+                <div class="article">
+                    <h3 class="article_title">{{ countryCategory.title }}</h3>
+                    <img class="article_image" src="{{ countryCategory.image }}" alt="{{ countryCategory.title }}">
 
-        {% for categorie in categories %}
-            <h1 class="categorie_h1">{{ categorie.title }}</h1>
-            <h2 class="categorie_h2">{{ categorie.introduction }}</h2>
-            <div class="articles">
-                {% for categoryRecipe in categorie.categoryRecipes %}
-                    <div class="article">
-                        <h3 class="article_title">{{ categoryRecipe.title }}</h3>
-                        <img class="article_image" src="{{ categoryRecipe.image }}" alt="{{ categoryRecipe.title }}">
-                    
+                    <a href="{{ path('app_countryRecipe', {'id': countryCategory.id}) }}">
+                        <button>Voir les détails de la recette</button>
+                    </a>
+                </div>
 
-                        <a href="{{ path('app_recipe', {'id': categoryRecipe.id}) }}">
-                            <button>Voir les détails de la recette</button>
-                        </a>
-                    </div>
-                {% endfor %}
-            </div>
-        {% endfor %}
-    </section>
+            {% endfor %}
+        </div>
+
+    {% endfor %}
+
 {% endblock %}

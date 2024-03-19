@@ -23,7 +23,7 @@ class Comment
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
-    private ?Recette $recette = null;
+    private ?Recipe $recipe = null;
 
     #[ORM\ManyToOne(inversedBy: 'comments')]
     #[ORM\JoinColumn(nullable: false)]
@@ -61,14 +61,14 @@ class Comment
         return $this;
     }
 
-    public function getRecette(): ?Recette
+    public function getRecipe(): ?Recipe
     {
-        return $this->recette;
+        return $this->recipe;
     }
 
-    public function setRecette(?Recette $recette): static
+    public function setRecipe(?Recipe $recipe): static
     {
-        $this->recette = $recette;
+        $this->recipe = $recipe;
 
         return $this;
     }

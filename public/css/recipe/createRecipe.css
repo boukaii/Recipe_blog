@@ -1,0 +1,50 @@
+.title_new_recettes {
+    text-align: center;
+    padding: 10px 20px;
+}
+.title_and_line {
+    text-align: center;
+    margin-top: 5%;
+    margin-bottom: 5%;
+}
+.line-new_recette {
+    display: inline-block;
+    width: 32%; 
+    height: 3px; 
+    margin-bottom: 30px;
+    background-color: #ffc904; 
+    border: none; 
+}
+.form_recette {
+    margin: 20px auto;
+    max-width: 500px;
+    padding: 20px;
+    border: 2px solid #ddd;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    margin-bottom: 5%;
+}
+.title_form {
+    margin-bottom: 5%;
+    margin-top: 5%;
+}
+.description_form {
+    margin-bottom: 5%;
+}
+
+.button_form {
+    background-color: #ffc904;
+    color: #fff;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-bottom: 5%;
+    margin-top: 5%;
+}
+
+.button_form:hover {
+    background-color: #ff8c00;
+    box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+}

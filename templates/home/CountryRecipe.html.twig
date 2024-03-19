@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/recipe.css') }}"/>
+{% endblock %}
+
+{% block body %}
+	<div class="container">
+		<h1 class="h1_recipe">Liste des Recettes</h1>
+
+		{% if countryRecipes is empty %}
+			<p>Aucune recette n'est disponible pour le moment.</p>
+		{% else %}
+			<ul>
+				<div class="articles">
+					{% for countryRecipe in countryRecipes %}
+						<div class="article">
+							<h3 class="article_title">{{ countryRecipe.title }}</h3>
+							<img class="article_image" src="{{ asset(countryRecipe.picture) }}" alt="{{ countryRecipe.title }}"/>
+							{# <a href="{{ path('app_recipe_details', {'id': countryRecipe.id}) }}"> #}
+								<button>Voir les détails de la recette</button>
+							</a>
+						</div>
+					{% endfor %}
+				</div>
+			</ul>
+		{% endif %}
+
+	{% endblock %}

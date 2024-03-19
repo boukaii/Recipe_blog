@@ -1,63 +1,77 @@
-h1 {
-    text-align: left;
-    color: #4caf50;
-    margin-left: 5%;
-    padding-top: 5%;
-}
-h2 {
-    color: #4caf50;
-    margin-top: 20px;
-    margin-left: 5%;
-}
-h4{
-    color: #4caf50; 
-    margin-top: 20px; 
-    margin-left: 5%;
-}
-p {
-    text-align: left;
-    color: white;
-    margin-left: 5%;
-    font-weight: 700;
-}
-#home {
-    position: relative;
-    background-image: url('/images/test.jpg');
-    background-size: cover;
-    background-repeat: no-repeat;
-    height: 120vh;
-    opacity: 70;
-}
-  .categorie_h1{
-    text-align: center;
-    margin-top: 15%;
-    margin-bottom: 5%;
-    color: black;
 
-  }
-  .categorie_h2{
-    text-align: center;
-    margin-bottom: 5%;
-    color: black;
-
-  }
-  .articles{
-    display: flex;
-    justify-content: space-around;
-  }
-  .article{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    color: #4caf50;
-    
-  }
-  .article_image{
-    margin-top: 5%;
-    margin-bottom: 5%;
-  }
-img {
-  max-width: 250px;
-  max-height: 150px;
+.title_and_line {
+  text-align: center;
+  /* margin-top: 5%; */
+  margin-bottom: 5%;
 }
 
+.line-quizz_recette {
+  display: inline-block;
+  width: 10%;
+  height: 3px;
+  margin-bottom: 50px;
+  background-color: #ffc904;
+  border: none;
+}
+.categorie_h1 {
+  text-align: center;
+  font-size: 2em;
+  margin-bottom: 1%;
+  margin-top: 10%;
+}
+
+.categorie_h2 {
+  text-align: center;
+  font-size: 1.5em;
+
+  margin: 5% 5%;
+}
+
+.articles {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.article {
+  width: 300px;
+  margin: 20px;
+  padding: 15px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+  border-radius: 8px;
+  text-align: center;
+}
+
+.article_title {
+  font-size: 1.2em;
+  margin-bottom: 10px;
+}
+
+/* ... Autres styles ... */
+
+.article_image {
+  width: 100%;
+  height: 200px; /* Ajustez cette valeur selon vos préférences */
+  object-fit: cover; /* Pour maintenir les proportions de l'image et couvrir la hauteur spécifiée */
+  border-radius: 8px;
+  margin-bottom: 10px;
+}
+
+/* ... Autres styles ... */
+
+
+button {
+  background-color: #ffc904;
+  color: white;
+  padding: 10px 15px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #45a049;
+}
+
+/* Add more styles as needed */

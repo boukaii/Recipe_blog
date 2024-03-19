@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+	{{ parent() }}
+	<link rel="stylesheet" href="{{ asset('css/recipe/myRecipes.css') }}"/>
+{% endblock %}
+
+{% block body %}
+
+	<div class="title_and_line">
+		<h1 class="title_me_recettes">Vos créations</h1>
+		<hr class="line-new_recette"/>
+	</div>
+
+	{% if mesRecettes is not empty %}
+
+		<div class="recettes">
+			{% for recette in mesRecettes %}
+				<ul>
+					<li>
+						<div class="recette">
+							<strong>{{ recette.title }}</strong>
+							<p>{{ recette.description }}</p>
+							<img class="img-me_recettes" src="{{ asset('uploads/images/' ~ recette.image) }}" alt="{{ recette.title }}">
+
+							<a href="{{ path('edit_recette', {'id': recette.id}) }}" class="button_form">Modifier</a>
+
+							<a href="{{ path('delete_recette', {'id': recette.id}) }}" class="button_form" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cette recette ?')">Supprimer</a>
+
+						</div>
+					</li>
+				</ul>
+			{% endfor %}
+		</div>
+
+	{% else %}
+		<p>Aucune recette disponible.</p>
+	{% endif %}
+{% endblock %}
